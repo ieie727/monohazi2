@@ -29,9 +29,13 @@ for(let i=0; i<animal.length; i++){
 function selectPositionAndType(i){
     //任意の範囲外に猫が召喚されるまで再抽選を行う
     if(200 <=animalX[i] && animalX[i] <=800 && 150<=animalY[i] && animalY[i]<=450){
-        animalY[i] =500;
+        if(animalY[i]<500){
+            animalY[i] =0;
+        }else{
+            animalY[i]=h;
+        }
     }
-
+    console.log(animalX[i], animalY[i]);
     animalRandom =Math.floor(Math.random()*2);
     if(animalRandom==0){
         animal[i].src ="image/cat.png";
@@ -117,7 +121,6 @@ function draw(){
                 tigerCount++;
             }
             totalCount =catCount + tigerCount;
-            console.log(totalCount);
 
             //動物の合計が最初の答えより少なかったら動物を再生成して繰り返す
             if(totalCount+3 <=result){
