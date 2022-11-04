@@ -5,10 +5,8 @@ const h =canvas.height;
 
 const resultMin =3;
 const resultMax =20;
-let result =Math.floor(Math.random() *resultMax);
-while(result<=resultMin){ //任意の結果が出るまで再抽選する
-    result =Math.floor(Math.random() *resultMax);
-}
+const result =createRandomNumber(resultMin, resultMax);
+console.log(result);
 let catCount =0;
 let tigerCount =0;
 let totalCount =0;
@@ -30,9 +28,8 @@ for(let i=0; i<animal.length; i++){
 //X座標、Y座標、動物の種類を決定
 function selectPositionAndType(i){
     //任意の範囲外に猫が召喚されるまで再抽選を行う
-    while(200 <=animalX[i] && animalX[i] <=800 && 150<=animalY[i] && animalY[i]<=450){
-        animalX[i] =Math.random() *w;
-        animalY[i] =Math.random() *h;
+    if(200 <=animalX[i] && animalX[i] <=800 && 150<=animalY[i] && animalY[i]<=450){
+        animalY[i] =500;
     }
 
     animalRandom =Math.floor(Math.random()*2);
@@ -120,6 +117,7 @@ function draw(){
                 tigerCount++;
             }
             totalCount =catCount + tigerCount;
+            console.log(totalCount);
 
             //動物の合計が最初の答えより少なかったら動物を再生成して繰り返す
             if(totalCount+3 <=result){
@@ -159,4 +157,8 @@ function showResult(animalCount, startX, animalY, animalImage){
         let animalX =startX +(50 *i);
         ctx.drawImage(animalImage,animalX,animalY,animalSizeX,animalSizeY)
     }
+}
+
+function createRandomNumber(min, max){
+    return Math.floor(Math.random() * (max - min) +min);
 }
