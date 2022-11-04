@@ -1,12 +1,13 @@
+//キャンバスの描画部分
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const w =canvas.width;
 const h =canvas.height;
 
+//結果となる引数を乱数で決める
 const resultMin =3;
 const resultMax =20;
 const result =createRandomNumber(resultMin, resultMax);
-console.log(result);
 let catCount =0;
 let tigerCount =0;
 let totalCount =0;
@@ -27,7 +28,7 @@ for(let i=0; i<animal.length; i++){
 
 //X座標、Y座標、動物の種類を決定
 function selectPositionAndType(i){
-    //任意の範囲外に猫が召喚されるまで再抽選を行う
+    //当たり範囲(またはその近く)に動物が召喚されそうな場合、Y座標の値を調整
     if(200 <=animalX[i] && animalX[i] <=800 && 150<=animalY[i] && animalY[i]<=450){
         if(animalY[i]<500){
             animalY[i] =0;
@@ -35,7 +36,7 @@ function selectPositionAndType(i){
             animalY[i]=h;
         }
     }
-    console.log(animalX[i], animalY[i]);
+    //動物の種類（猫or虎）を乱数で決める
     animalRandom =Math.floor(Math.random()*2);
     if(animalRandom==0){
         animal[i].src ="image/cat.png";
@@ -68,7 +69,7 @@ cat.src ="image/cat.png";
 const tiger =new Image();
 tiger.src ="image/tiger.png";
 
-
+//スタート・リスタートボタンの設定（コピペのみ）
 const startButton = document.getElementById('start');
 kotatsu.onload =()=>ctx.drawImage(kotatsu, kotatsuX, kotatsuY, kotatsuSizeX, kotatsuSizeY);
 let id;
@@ -83,6 +84,7 @@ startButton.addEventListener('click', () => {
         location.reload();
     }
 });
+
 
 function draw(){
     //初期描画
@@ -101,7 +103,7 @@ function draw(){
         let tilt = (h/2 - animalY[i]) / (w/2 - animalX[i]); //中心と動物の現在地をつなぐ直線の傾き
         let x = Math.sqrt(1 / (1 + tilt * tilt)); //Xの移動方向
         let y =tilt * x; //Yの移動方向
-        let speed =2;
+        let speed =2; //★★ここの値を変更すると動物の移動速度が倍速になる★★
         if(animalX[i] <w/2){
             animalX[i] += x *speed;
             animalY[i] += y *speed;
@@ -111,6 +113,7 @@ function draw(){
         }
 
         ctx.drawImage(kotatsu, kotatsuX, kotatsuY, kotatsuSizeX, kotatsuSizeY); //コタツの描画
+        
         //動物が当たり範囲内に入った時の処理
         if(atariXmin <=animalX[i] && animalX[i] <=atariXmax && atariYmin<=animalY[i] && animalY[i]<=atariYmax){
             //それぞれの動物たちのカウンターを増やす
@@ -126,7 +129,9 @@ function draw(){
             if(totalCount+3 <=result){
                 selectPositionAndType(i);
             }
-            else if(totalCount <result){ //答えの分が既に生成されている場合は、画面外の遠くに作る
+
+            //答えの分が既に生成されている場合は、画面外の遠くに作る
+            else if(totalCount <result){
                 animalX[i] =Number.MAX_SAFE_INTEGER;
                 animalY[i] =Number.MAX_SAFE_INTEGER;
             }
@@ -155,6 +160,7 @@ function draw(){
     }
 }
 
+//結果表示用の関数
 function showResult(animalCount, startX, animalY, animalImage){
     for(let i=0; i<animalCount; i++){
         let animalX =startX +(50 *i);
@@ -162,6 +168,7 @@ function showResult(animalCount, startX, animalY, animalImage){
     }
 }
 
+//minからmaxまでの整数の乱数を出す
 function createRandomNumber(min, max){
     return Math.floor(Math.random() * (max - min) +min);
 }
