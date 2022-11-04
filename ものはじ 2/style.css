@@ -3,12 +3,11 @@ body{
     text-align: center;
 }
 
-.title{
-    font-size: 35px;
-    font-weight: bold;
-    margin: 10px;
-}
-
 canvas{
     background: #B8E2FC;
+}
+
+button{
+    display: block;
+    margin: auto;
 }
