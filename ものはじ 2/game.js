@@ -13,7 +13,7 @@ let catCount =0;
 let tigerCount =0;
 let totalCount =0;
 
-//初期設定　＆一次元配列までなので配列でゴリ押しする。
+//初期設定(一次元配列までなので配列でゴリ押しする。)
 const animalSizeX =50;
 const animalSizeY =50;
 const animal1 =new Image();
@@ -48,8 +48,10 @@ function selectPositionAndType(i){
 //当たり判定の範囲の設定
 const atariXmin =450;
 const atariXmax =550;
+const atariSizeX =atariXmax - atariXmin;
 const atariYmin =280;
 const atariYmax =320;
+const atariSizeY =atariYmax - atariYmin;
 
 //こたつの設定
 const kotatsu =new Image();
@@ -66,11 +68,29 @@ const tiger =new Image();
 tiger.src ="image/tiger.png";
 
 
-const id =setInterval(draw, 10);
+const startButton = document.getElementById('start');
+kotatsu.onload =()=>ctx.drawImage(kotatsu, kotatsuX, kotatsuY, kotatsuSizeX, kotatsuSizeY);
+let id;
+let flag =false;
+startButton.addEventListener('click', () => {
+    if(flag===false){
+        id = setInterval(draw,10);
+        startButton.textContent ="もう１度";
+        flag =true;
+    }else{
+        startButton.textContent ="スタート";
+        location.reload();
+    }
+});
+
 function draw(){
     //初期描画
     ctx.fillStyle = "#B8E2FC";
     ctx.fillRect(0, 0, w, h);
+    
+    //あたり範囲
+    ctx.fillStyle = "#ffff";
+    ctx.fillRect(atariXmin, atariYmin, atariSizeX, atariSizeY);
 
     //動物たちを一匹ずつ動かす
     for(let i=0; i<animal.length; i++){
@@ -114,9 +134,9 @@ function draw(){
             else{
                 clearInterval(id);
                 let answer =window.prompt("猫は何匹いるでしょうか？\n※半角数字で回答しましょう。");
-                
                 ctx.fillStyle = "#B8E2FC";
                 ctx.fillRect(0, 0, w, h);
+
                 //正解・不正解の判定
                 ctx.font = "30px 'ＭＳ ゴシック'";
                 ctx.fillStyle = "#333333";
@@ -139,8 +159,4 @@ function showResult(animalCount, startX, animalY, animalImage){
         let animalX =startX +(50 *i);
         ctx.drawImage(animalImage,animalX,animalY,animalSizeX,animalSizeY)
     }
-}
-
-function start(){
-    location.reload();
 }
