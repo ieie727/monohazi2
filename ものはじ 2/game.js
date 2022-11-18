@@ -13,12 +13,12 @@ let tigerCount = 0;
 let totalCount = 0;
 
 //初期設定(一次元配列までなので配列でゴリ押しする。)
-const animalXsize = 50;
-const animalYsize = 50;
 const animal1 = new Image();
 const animal2 = new Image();
 const animal3 = new Image();
 const animal = [animal1, animal2, animal3];
+const animalXsize = 50;
+const animalYsize = 50;
 const animalX = ["", "", ""];
 const animalY = ["", "", ""];
 const animalType = ["", "", ""];
@@ -119,6 +119,7 @@ function draw(){
             //動物の合計が最初の答えに達したら、正解発表の処理をする
             else{
                 showCorrectAnswer();
+                clearInterval(id); //intervalの繰り返しを止める
                 return;
             }
         }
@@ -163,15 +164,16 @@ function createAnimalToFar(i){
 
 //正解発表
 function showCorrectAnswer(){
-    clearInterval(id); //intervalの繰り返しを止める
-    let answer = window.prompt("猫は何匹いるでしょうか？\n※半角数字で回答しましょう。");
+    //背景を青で塗り直す（リセットする）
     ctx.fillStyle = "#B8E2FC";
     ctx.fillRect(0, 0, w, h);
+
+    let answer = window.prompt("猫は何匹いるでしょうか？\n※半角数字で回答しましょう。");
 
     //正解・不正解の判定
     ctx.font = "30px 'ＭＳ ゴシック'";
     ctx.fillStyle = "#333333";
-    if(answer === catCount){    
+    if(answer == catCount){    
         ctx.fillText("正解！ 正解は"+catCount+"匹です。", 250, 100);
     }else{
         ctx.fillText("残念！ 正解は"+catCount+"匹です", 250, 100);
